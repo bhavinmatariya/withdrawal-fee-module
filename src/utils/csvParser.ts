@@ -4,9 +4,9 @@ import { Prisma } from "@prisma/client";
 import * as XLSX from "xlsx";
 
 interface FeeCSVRow {
-  minAmount: string;
-  maxAmount: string;
-  fee: string;
+  minimum: string;
+  maximum: string;
+  rate: string;
 }
 
 export const parseCSVorExcel = async (
@@ -33,9 +33,9 @@ export const parseCSV = (
     Readable.from(buffer)
       .pipe(csvParser())
       .on("data", (row: FeeCSVRow) => {
-        const minAmount = parseFloat(row.minAmount);
-        const maxAmount = parseFloat(row.maxAmount);
-        const fee = parseFloat(row.fee);
+        const minAmount = parseFloat(row.minimum);
+        const maxAmount = parseFloat(row.maximum);
+        const fee = parseFloat(row.rate);
 
         if (isNaN(minAmount) || isNaN(maxAmount) || isNaN(fee)) {
           throw new Error(`Invalid CSV data: ${JSON.stringify(row)}`);
@@ -54,9 +54,9 @@ const parseExcel = (buffer: Buffer) => {
   const rows: any[] = XLSX.utils.sheet_to_json(firstSheet);
 
   return rows.map((row) => {
-    const minAmount = parseFloat(row.minAmount);
-    const maxAmount = parseFloat(row.maxAmount);
-    const fee = parseFloat(row.fee);
+    const minAmount = parseFloat(row.minimum);
+    const maxAmount = parseFloat(row.maximum);
+    const fee = parseFloat(row.rate);
 
     if ([minAmount, maxAmount, fee].some(isNaN)) {
       throw new Error(`Invalid Excel data: ${JSON.stringify(row)}`);
