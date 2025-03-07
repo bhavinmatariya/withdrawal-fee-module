@@ -8,7 +8,7 @@ const options: swaggerJSDoc.Options = {
       version: '1.0.0',
       description: 'Automatically generated API docs',
     },
-    servers: [{ url: 'http://localhost:3000' }],
+    servers: [{ url: 'https://withdrawal-fee-module.onrender.com' }],
   },
   apis: ['./src/routes/*.ts', './src/controllers/*.ts'], // Auto-scan routes/controllers
 };
