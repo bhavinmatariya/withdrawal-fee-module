@@ -27,7 +27,7 @@ export const createFee = async (data: Prisma.WithdrawalFeeRangeCreateInput) => {
   if (existing) {
     throw new ApiError(
       400,
-      "Fee range with same minAmount and maxAmount already exists."
+      "Fee range overlaps with an existing range."
     );
   }
   return prisma.withdrawalFeeRange.create({ data });
