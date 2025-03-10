@@ -3,7 +3,7 @@ import { Readable } from "stream";
 import { Prisma } from "@prisma/client";
 import * as XLSX from "xlsx";
 
-interface FeeCSVRow {
+interface RateCSVRow {
   minimum: string;
   maximum: string;
   rate: string;
@@ -12,7 +12,7 @@ interface FeeCSVRow {
 export const parseCSVorExcel = async (
   buffer: Buffer,
   mimetype: string
-): Promise<Prisma.WithdrawalFeeRangeCreateManyInput[]> => {
+): Promise<Prisma.WithdrawalRateRangeCreateManyInput[]> => {
   if (
     mimetype.includes("excel") ||
     mimetype.includes("spreadsheetml") ||
@@ -26,22 +26,22 @@ export const parseCSVorExcel = async (
 
 export const parseCSV = (
   buffer: Buffer
-): Promise<Prisma.WithdrawalFeeRangeCreateManyInput[]> => {
+): Promise<Prisma.WithdrawalRateRangeCreateManyInput[]> => {
   return new Promise((resolve, reject) => {
-    const data: Prisma.WithdrawalFeeRangeCreateManyInput[] = [];
+    const data: Prisma.WithdrawalRateRangeCreateManyInput[] = [];
 
     Readable.from(buffer)
       .pipe(csvParser())
-      .on("data", (row: FeeCSVRow) => {
+      .on("data", (row: RateCSVRow) => {
         const minAmount = parseFloat(row.minimum);
         const maxAmount = parseFloat(row.maximum);
-        const fee = parseFloat(row.rate);
+        const rate = parseFloat(row.rate);
 
-        if (isNaN(minAmount) || isNaN(maxAmount) || isNaN(fee)) {
+        if (isNaN(minAmount) || isNaN(maxAmount) || isNaN(rate)) {
           throw new Error(`Invalid CSV data: ${JSON.stringify(row)}`);
         }
 
-        data.push({ minAmount, maxAmount, fee });
+        data.push({ minAmount, maxAmount, rate });
       })
       .on("end", () => resolve(data))
       .on("error", reject);
@@ -56,12 +56,12 @@ const parseExcel = (buffer: Buffer) => {
   return rows.map((row) => {
     const minAmount = parseFloat(row.minimum);
     const maxAmount = parseFloat(row.maximum);
-    const fee = parseFloat(row.rate);
+    const rate = parseFloat(row.rate);
 
-    if ([minAmount, maxAmount, fee].some(isNaN)) {
+    if ([minAmount, maxAmount, rate].some(isNaN)) {
       throw new Error(`Invalid Excel data: ${JSON.stringify(row)}`);
     }
 
-    return { minAmount, maxAmount, fee };
+    return { minAmount, maxAmount, rate };
   });
 };

@@ -18,7 +18,7 @@ app.use('/api', routes);
 app.use(errorHandler);
 
 app.get('/', (req, res) => {
-  res.send('Withdrawal Fee Module API is running!');
+  res.send('Withdrawal rate Module API is running!');
 });
 
 app.listen(PORT, () => {

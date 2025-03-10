@@ -4,7 +4,7 @@ const options: swaggerJSDoc.Options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Withdrawal Fee API',
+      title: 'Withdrawal rate API',
       version: '1.0.0',
       description: 'Automatically generated API docs',
     },

@@ -1,8 +1,8 @@
 import { Router } from "express";
 import multer from "multer";
-import * as controller from "../controllers/fee.controller";
+import * as controller from "../controllers/rate.controller";
 import validate from "../middleware/validate";
-import { calculateFeeSchema, createFeeSchema, updateFeeSchema } from "../validations/fee.validation";
+import { createRateSchema, getRateSchema, updateRateSchema } from "../validations/rate.validation";
 
 const upload = multer();
 const router = Router();
@@ -11,7 +11,7 @@ const router = Router();
  * @openapi
  * /api/ranges/upload:
  *   post:
- *     summary: Upload withdrawal fee ranges from CSV file
+ *     summary: Upload withdrawal rate ranges from CSV file
  *     requestBody:
  *       required: true
  *       content:
@@ -24,17 +24,17 @@ const router = Router();
  *                 format: binary
  *     responses:
  *       200:
- *         description: Fees uploaded successfully.
+ *         description: Rates uploaded successfully.
  *       500:
  *         description: Internal server error.
  */
-router.post("/upload", upload.single("file"), controller.uploadFees);
+router.post("/upload", upload.single("file"), controller.uploadRates);
 
 /**
  * @openapi
  * /api/ranges:
  *   post:
- *     summary: Create a new withdrawal fee range
+ *     summary: Create a new withdrawal rate range
  *     requestBody:
  *       required: true
  *       content:
@@ -48,29 +48,29 @@ router.post("/upload", upload.single("file"), controller.uploadFees);
  *               maxAmount:
  *                 type: number
  *                 example: 100
- *               fee:
+ *               rate:
  *                 type: number
  *                 example: 1.5
  *     responses:
  *       201:
- *         description: Fee range created successfully.
+ *         description: rate range created successfully.
  *       500:
  *         description: Internal server error.
  */
-router.post("/", validate(createFeeSchema, 'body'), controller.createFee);
+router.post("/", validate(createRateSchema, 'body'), controller.createRate);
 
 /**
  * @openapi
  * /api/ranges/{id}:
  *   put:
- *     summary: Update an existing withdrawal fee range
+ *     summary: Update an existing withdrawal rate range
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID of the fee range to update
+ *         description: ID of the rate range to update
  *     requestBody:
  *       required: true
  *       content:
@@ -84,42 +84,42 @@ router.post("/", validate(createFeeSchema, 'body'), controller.createFee);
  *               maxAmount:
  *                 type: number
  *                 example: 200
- *               fee:
+ *               rate:
  *                 type: number
  *                 example: 2.0
  *     responses:
  *       200:
- *         description: Fee range updated successfully.
+ *         description: rate range updated successfully.
  *       500:
  *         description: Internal server error.
  */
-router.put("/:id", validate(updateFeeSchema, 'body'), controller.updateFee);
+router.put("/:id", validate(updateRateSchema, 'body'), controller.updateRate);
 
 /**
  * @openapi
  * /api/ranges/{id}:
  *   delete:
- *     summary: Delete a withdrawal fee range
+ *     summary: Delete a withdrawal rate range
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID of the fee range to delete
+ *         description: ID of the rate range to delete
  *     responses:
  *       204:
- *         description: Fee range deleted successfully.
+ *         description: rate range deleted successfully.
  *       500:
  *         description: Internal server error.
  */
-router.delete("/:id", controller.deleteFee);
+router.delete("/:id", controller.deleteRate);
 
 /**
  * @openapi
- * /api/ranges/calculate:
+ * /api/ranges/getrate:
  *   get:
- *     summary: Calculate withdrawal fee based on amount
+ *     summary: Get withdrawal rate based on amount
  *     parameters:
  *       - in: query
  *         name: amount
@@ -127,28 +127,28 @@ router.delete("/:id", controller.deleteFee);
  *         schema:
  *           type: number
  *           example: 150
- *         description: Amount to calculate the fee for
+ *         description: Amount to get the rate for
  *     responses:
  *       200:
- *         description: Returns applicable fee details.
+ *         description: Returns applicable rate details.
  *       404:
- *         description: No fee range found for given amount.
+ *         description: No rate range found for given amount.
  *       500:
  *         description: Internal server error.
  */
-router.get("/calculate", validate(calculateFeeSchema, 'query'), controller.calculateFee);
+router.get("/getrate", validate(getRateSchema, 'query'), controller.getrate);
 
 /**
  * @openapi
  * /api/ranges:
  *   get:
- *     summary: Get all withdrawal fee ranges
+ *     summary: Get all withdrawal rate ranges
  *     responses:
  *       200:
- *         description: Successfully retrieved all fee ranges.
+ *         description: Successfully retrieved all rate ranges.
  *       500:
  *         description: Internal server error.
  */
-router.get("/", controller.getAllFees);
+router.get("/", controller.getAllRates);
 
 export default router;

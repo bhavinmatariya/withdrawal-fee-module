@@ -1,5 +1,5 @@
 import express from 'express';
-import rangeRoutes from './fee.routes';
+import rangeRoutes from './rate.routes';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from '../swagger';
 

@@ -1,6 +1,6 @@
-# Withdrawal Fee Module
+# Withdrawal Rate Module
 
-This project is a **Range-Based Withdrawal Fee Module** built with **Node.js**, **Express**, **TypeScript**, and **Prisma**. It provides an API to manage withdrawal fee ranges, calculate fees based on amounts, and upload fee ranges from CSV or Excel files.
+This project is a **Range-Based Withdrawal Rate Module** built with **Node.js**, **Express**, **TypeScript**, and **Prisma**. It provides an API to manage withdrawal rate ranges, calculate fees based on amounts, and upload rate ranges from CSV or Excel files.
 
 
 ## Installation
@@ -44,12 +44,12 @@ Access the Swagger API documentation at:
 ### Ranges Management
 | Method | Endpoint             | Description                    |
 |--------|---------------------|--------------------------------|
-| POST   | `/api/ranges/upload` | Upload withdrawal fee ranges from CSV or Excel files |
-| POST   | `/api/ranges`       | Create a new withdrawal fee range |
-| PUT    | `/api/ranges/{id}`  | Update an existing withdrawal fee range |
-| DELETE | `/api/ranges/{id}`  | Delete a withdrawal fee range |
-| GET    | `/api/ranges`       | Get all withdrawal fee ranges |
-| GET    | `/api/ranges/calculate?amount=1000` | Calculate withdrawal fee based on amount |
+| POST   | `/api/ranges/upload` | Upload withdrawal rate ranges from CSV or Excel files |
+| POST   | `/api/ranges`       | Create a new withdrawal rate range |
+| PUT    | `/api/ranges/{id}`  | Update an existing withdrawal rate range |
+| DELETE | `/api/ranges/{id}`  | Delete a withdrawal rate range |
+| GET    | `/api/ranges`       | Get all withdrawal rate ranges |
+| GET    | `/api/ranges/calculate?amount=1000` | Calculate withdrawal rate based on amount |
 
 ## Environment Variables
 

@@ -1,7 +1,7 @@
 {
-  "name": "withdrawal-fee-module",
+  "name": "withdrawal-rate-module",
   "version": "1.0.0",
-  "description": "Range Based Withdrawal Fee Module",
+  "description": "Range Based Withdrawal rate Module",
   "main": "dist/app.js",
   "scripts": {
     "dev": "ts-node src/app.ts",
