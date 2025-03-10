@@ -16,11 +16,14 @@ export const bulkCreateFees = async (
 export const createFee = async (data: Prisma.WithdrawalFeeRangeCreateInput) => {
   const existing = await prisma.withdrawalFeeRange.findFirst({
     where: {
-      minAmount: data.minAmount,
-      maxAmount: data.maxAmount,
+      OR: [
+        {
+          minAmount: { lte: data.maxAmount },
+          maxAmount: { gte: data.minAmount },
+        },
+      ],
     },
   });
-
   if (existing) {
     throw new ApiError(
       400,
@@ -34,20 +37,25 @@ export const updateFee = async (
   id: number,
   data: Prisma.WithdrawalFeeRangeUpdateInput
 ) => {
+  const current = await prisma.withdrawalFeeRange.findUnique({ where: { id } });
+  if (!current) throw new ApiError(404, "Fee range not found.");
+
   const existing = await prisma.withdrawalFeeRange.findFirst({
     where: {
       id: { not: id },
-      minAmount: data.minAmount as number,
-      maxAmount: data.maxAmount as number,
+      OR: [
+        {
+          minAmount: { lte: data.maxAmount as number },
+          maxAmount: { gte: data.minAmount as number },
+        },
+      ],
     },
   });
 
   if (existing) {
-    throw new ApiError(
-      400,
-      "Fee range with same minAmount and maxAmount already exists."
-    );
+    throw new ApiError(400, "Fee range overlaps with an existing range.");
   }
+
   return prisma.withdrawalFeeRange.update({ where: { id }, data });
 };
 
